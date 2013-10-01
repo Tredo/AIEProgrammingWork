@@ -10,6 +10,23 @@
 using namespace std;
 
 
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+//																						//
+//		Change Psuedocode into actual code												//
+//		Figure out the best way to spawn enemies in waves								//
+//		Figure out how to spawn more than one bullet and have separate hitboxes			//	
+//		Write code to delete enemy hitboxes and sprites when they are desroyed			//
+//		Write a destroy function that changes the sprite								//
+//      to an explosion for 10-15 frames												//
+//		Fix the gamestate switch case and the start and pause menus						//
+//		Get user input at menus to start/ pause/ unpause game							//
+//		Write code to allow for scrolling of the background image						//
+//		Make a dynamic array for enemy health											//
+//		
+//
+//
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
+
 const int iScreenWidth = 1280;
 const int iScreenHeight = 780;
 
@@ -84,7 +101,11 @@ void PlayerHitbox()
 
 void StartMenu()
 {
-
+	//create menu sprite
+	//move menu sprite to middle of screen
+	//draw option 1 string
+	//draw option 2 string
+	//draw option 3 string
 }
 
 void PauseMenu()
