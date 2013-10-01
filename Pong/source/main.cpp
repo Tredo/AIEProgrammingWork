@@ -25,6 +25,8 @@ const int PLAYER2_H = 100;
 const int BALL_W = 30;
 const int BALL_H = 30;
 
+bool pause = false;
+
 struct vector2
 {
 	float x;
@@ -42,13 +44,13 @@ struct movableObject
 
 // global variables 
 unsigned int bgImage = -1;
-
+unsigned int menu = -1;
 movableObject player1 = {PLAYER1_X, (SCREEN_Y/2), 0, 0, -1 , PLAYER1_W, PLAYER1_H};
 movableObject player2 = {PLAYER2_X, (SCREEN_Y/2), 0, 0, -1, PLAYER2_W, PLAYER2_H};
 movableObject ball = {500, 500, 2, 1, -1, BALL_W, BALL_H};
 
 bool g_gameOver = false;
-bool bmenu = false;
+bool bmenu = true;
 
 int player1Score = 0;
 int player2Score = 0;
@@ -62,25 +64,24 @@ void updateBallPosition(movableObject &obj)
 	obj.position = vectorAdd(obj.position, obj.speed);
 }
 
-// check if the ball has collided with the paddle
+// check if the ball's edges are within the paddle
 // returns true if a collision occurred
 bool checkPaddleCollision(movableObject& ball, movableObject& player) 
 {
 	int speed = ball.speed.x;
 	
-	int ballHalfW = ball.width>>1;
-	int playerHalfW = player.width>>1;
-	int playerHalfH = player.height>>1;
-	
-	if(speed == 0)
-		return false;
-
-	if(speed < 0){
+	int ballHalfW = ball.width/2;
+	int playerHalfW = player.width/2;
+	int playerHalfH = player.height/2;
+		
+	if(speed < 0)
+	{
 		if(ball.position.x - ballHalfW < player.position.x + playerHalfW && 
 			ball.position.y > player.position.y - playerHalfH &&
-			ball.position.y < player.position.y + player.height){
+			ball.position.y < player.position.y + player.height)
+			{
 				return true;
-		}
+			}
 	}
 	else {
 		if(ball.position.x + ballHalfW > player.position.x - playerHalfW && 
@@ -117,7 +118,7 @@ bool testOnScreen(movableObject& obj)
 	return false;
 }
 
-// ; the position of the ball in the middle of the screen
+// Resets the position of the ball in the middle of the screen
 // Sets the ball's X and Y speed to random values
 void ResetBall()
 {
@@ -127,32 +128,59 @@ void ResetBall()
 	//resets the value of the ball's X and Y vectors to a random value
 	ball.speed.x = rand()%5;
 	srand(time(NULL));
+	ball.speed.x += 1;
 	ball.speed.y = rand()%5;
 	srand(time(NULL));
+	ball.speed.y += 1;
 
 }
 
 // Paddle Movement AI
 // Finds if the ball's Y is greater than or less than the paddle's Y
 // and moves accordingly
+//BUG: Snaps to center instead of moving slowly towards it
+//BUG: Snaps to Y position of second paddle when ball collides with second paddle
+//BUG: Does not move based off of speed variable, moves based off of ball.speed.x
+//BUG: Cannot lose because of movespeed scaling off of ball speed
 
-void seek(movableObject &player, movableObject& ball)
+void AImove(movableObject &player, movableObject& ball)
 {
 	float speed = 1;
 	srand (time(NULL));
 
-	if(player.position.y > ball.position.y)
+		
+	if(ball.speed.x < 0)
 	{
-		while(player.position.y > ball.position.y)
+		if(player.position.y > ball.position.y)
 		{
-			player.position.y -= speed;
+			while(player.position.y > ball.position.y)
+			{
+				player.position.y -= speed;
+			}
+		}
+		else if(player.position.y < ball.position.y)
+		{
+			while(player.position.y < ball.position.y)
+			{
+				player.position.y += speed;
+			}
 		}
 	}
-	else if(player.position.y < ball.position.y)
+	if(ball.speed.x > 0)
 	{
-		while(player.position.y < ball.position.y)
+		if(player.position.y > SCREEN_Y/2)
 		{
-			player.position.y += speed;
+			while(player.position.y > SCREEN_Y/2)
+			{
+				player.position.y -= speed;
+			}
+		}
+		else if(player.position.y < SCREEN_Y/2)
+		{
+			while(player.position.y < SCREEN_Y/2)
+			{
+				player.position.y += speed;
+			}
 		}
 	}
 }
@@ -208,12 +236,38 @@ void score()
 		ResetBall();
 	}
 }
+//this doesn't work
+bool pauseCheck()
+{
+	if(IsKeyDown(GLFW_KEY_SPECIAL+38))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
+//this also doesnt work
+void drawMenu()
+{
+			
+		/*menu = CreateSprite( "./images/menu.png", SCREEN_X, SCREEN_Y, true );
+		MoveSprite(menu, SCREEN_X>>1, SCREEN_Y>>1);
+		DrawSprite(menu);*/
+		DrawString("Test text 1", 300, 350);
+		DrawString("Test text 2", 300, 400);
+		DrawString("Test text 3", 300, 450);
+		DrawString("Test text 4", 300, 500);
+		
+
+}
 
 // initialize all the variables in the game
 void initGame() 
 {
-	srand(time(0));
+	//srand(time(0));
 
 	// Now load some sprites
 	bgImage = CreateSprite( "./images/bg.png", SCREEN_X, SCREEN_Y, true );
@@ -245,8 +299,8 @@ void updateGame()
 	//move(player1);
 	move2(player2);
 	
-	if(ball.speed.x < 0)
-		seek(player1, ball);
+	//if(ball.speed.x < 0)
+		AImove(player1, ball);
 			
 	if(g_gameOver == false) 
 	{
@@ -256,26 +310,28 @@ void updateGame()
 			g_gameOver = true;
 		}
 	}
-
+	//if the ball is moving towards the left the game will 
+	//check for paddle collision with player1
 	if(ball.speed.x < 0) {
 		if(checkPaddleCollision(ball, player1) == true)  {
 			ball.speed.x *= -1;
 		}
 	}
+	//if the ball is moving towards the right the game will
+	//check for paddle collision with player2
 	else {
 		if(checkPaddleCollision(ball, player2) == true)  {
 			ball.speed.x *= -1;
 		}
 	}
 
-
-	RotateSprite(player1.sprite, 0);
+	//moves the sprites to the position of the hitboxes
 	MoveSprite(player1.sprite, player1.position.x, player1.position.y);
 
-	RotateSprite(player2.sprite, 0);
 	MoveSprite(player2.sprite, player2.position.x, player2.position.y);
 
 	MoveSprite(ball.sprite, (int)ball.position.x, (int)ball.position.y);
+	
 }
 
 
@@ -287,6 +343,7 @@ void drawGame()
 	DrawSprite(player1.sprite);
 	DrawSprite(player2.sprite);
 
+	//positions names and scores
 	static char outScore1[10] = {'\n'};
 	static char outScore2[10] = {'\n'};
 
@@ -298,32 +355,34 @@ void drawGame()
 			
 	if(g_gameOver == true) 
 	{
-			
+		DrawString("You suck", 500, 500);	
 	}
 }
 
 // entry point of the program
 int main( int arc, char* argv[] )
 {	
-	// First we need to create our Game Framework
 	Initialise(SCREEN_X, SCREEN_Y, false );
 
-	
 		initGame();
 		
-		do {
+		do 
+		{
 			frameCounter++;
 
 			if(frameCounter > 5000)
 				frameCounter = 0;
-
+			
+			
 			ClearScreen();
 		
 			updateGame();
 
 			drawGame();
-		} while ( FrameworkUpdate() == false );
+		} 
+		while ( FrameworkUpdate() == false );
 	
+
 	destroyGame();
 	
 	Shutdown();
