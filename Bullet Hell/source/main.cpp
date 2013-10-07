@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <crtdbg.h>
 #include <iostream>
+#include "VectorMath.h"
 
 using namespace std;
 
@@ -22,21 +23,26 @@ using namespace std;
 //		Get user input at menus to start/ pause/ unpause game							//
 //		Write code to allow for scrolling of the background image						//
 //		Make a dynamic array for enemy health											//
+//		Impliment classes into code
 //		
-//
 //
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
 
 const int iScreenWidth = 1280;
-const int iScreenHeight = 780;
+const int iScreenHeight = 720;
 
 int iPlayerOneX;
 int iPlayerOneY;
 int iPlayerOneWidth;
 int iPlayerOneHeight;
-//movableObject player1;
+int iMouseX;
+int iMouseY;
+
+int PMenu = -1;
+int BGImage = -1;
 
 int i = 3;
+int test = 1;
 
 
 struct vector2
@@ -53,6 +59,13 @@ struct movableObject
 	int width;
 	int height;
 };
+
+movableObject player1 = {iScreenWidth/2, 300, 0, 0, -1 , iPlayerOneWidth, iPlayerOneHeight};
+
+void UpdateObjectPosition(movableObject &obj) 
+{
+	obj.position = vectorAdd(obj.position, obj.speed);
+}
 
 void SpawnEnemy()
 {
@@ -75,14 +88,33 @@ void FireBullet()
 
 void PlayerInput()
 {
-	//get mouse location
-	//while players x location != mouse x location
-	//if players x location is > mouse x then player x location -1
-	//else if players x location is <  mouse x then player x location +1
-	//while players y location != mouse y location
-	//if players y location is > mouse y then player y location -1
-	//else if players y location < mouse y then player y location +1
-	//while mouse left click is down firebullet
+	GetMouseLocation(iMouseX, iMouseY);
+	while(player1.position.x != iMouseX)
+	{
+		if(player1.position.x > iMouseX)
+		{
+			player1.position.x -= 1;
+		}
+		else if(player1.position.x < iMouseX)
+		{
+			player1.position.x += 1;
+		}
+	}
+	while(player1.position.y != iMouseY)
+	{
+		if(player1.position.y > iMouseY)
+		{
+			player1.position.y -=1;
+		}
+		else if(player1.position.y < iMouseY)
+		{
+			player1.position.y +=1;
+		}
+	}
+	while(GetMouseButtonDown(0) == true)
+	{
+		FireBullet();
+	}
 }
 
 void EnemyHitbox()
@@ -110,40 +142,40 @@ void StartMenu()
 
 void PauseMenu()
 {
-	int PMenu = -1;
+	
 	PMenu = CreateSprite( "./images/PMenu.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(PMenu, iScreenWidth/2, iScreenHeight/2);
 }
 
 void InitGame()
 {
-	//create background sprite
-	//move background sprite to middle of screen
-	//create player sprite
+	BGImage = CreateSprite ( "./images/BGImage.png", iScreenWidth, iScreenHeight, true );
+	MoveSprite(BGImage, iScreenWidth/2, iScreenHeight/2);
+	player1.sprite = CreateSprite( "./images/Player.png", 200, 200, true );
 }
 
 void DrawGame()
 {
-	//draw background
+	ClearScreen();
+	DrawSprite(BGImage);
+	DrawSprite(player1.sprite);
 	//draw player bullets
 	//draw enemy bullets
-	//draw player sprite
 	//draw enemy sprites
 	//draw score + lives string
-	//clear screen
-	//frameworkupdate
+	FrameworkUpdate();
 }
 
 void UpdateGame()
 {
 	//SpawnEnemy
-	//update player position
+	PlayerInput();
+	MoveSprite(player1.sprite, player1.position.x, player1.position.y);
 	//update player bullet position
 	//update enemy position
 	//update enemy bullet position
 	//check player collision
 	//check enemy collision
-	//move player sprite to player position
 	//move player bulllet sprites to player bullets' positions
 	//MoveEnemy
 	//move enemy sprites to enemy positions
@@ -160,27 +192,37 @@ enum GameState
 
 
 int main( int argc, char* argv[] )
+
 {	
 	Initialise(iScreenWidth, iScreenHeight, false );
 
-		
-	switch(i)
-	{
-	case 1:
-		PlayerInput;
-		UpdateGame;
-		DrawGame;
-		break;
-	case 2:
-		StartMenu();
-		break;
-	case 3:
-		PauseMenu();
-		break;
-	default:
-		cout << "Error!\n";
-		break;
-	}
+	InitGame();
+
+		do
+		{
+			switch(i)
+			{
+			case 1:
+				PlayerInput();
+				UpdateGame();
+				DrawGame();
+				break;
+			case 2:
+				StartMenu();
+				break;
+			case 3:
+				PauseMenu();
+				DrawSprite(PMenu);
+				break;
+			default:
+				cout << "Error!\n";
+				break;
+			}
+		}
+		while(test == 1);
+	
+	
+	Shutdown();
 
 	return 0;
 }
