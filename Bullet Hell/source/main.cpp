@@ -66,6 +66,7 @@ struct movableObject
 };
 
 movableObject player1 = {iScreenWidth/2, 300, 0, 0, -1 , iPlayerOneWidth, iPlayerOneHeight};
+movableObject bullets[100];
 
 void UpdateObjectPosition(movableObject &obj) 
 {
@@ -87,10 +88,16 @@ void MoveEnemy()
 
 void FireBullet()
 {
-	//create bullet and sprite at location in front of player
-	//change bullet's speed to have it fly up the screen
+	for( int u = 0; u < 100; i++)
+	{
+		bullets[u].sprite = CreateSprite("./images/player bullet.png", 10, 10, true);
+		bullets[u].sprite = {player1.position.x, player1.position.y, 0, 1, 10, 10};
+	}
 }
 
+void UpdateBullet()
+{
+}
 void PlayerInput()
 {
 	GetMouseLocation(iMouseX, iMouseY);
