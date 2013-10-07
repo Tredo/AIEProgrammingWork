@@ -7,6 +7,7 @@
 #include <crtdbg.h>
 #include <iostream>
 #include "VectorMath.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -19,12 +20,13 @@ using namespace std;
 //		Write code to delete enemy hitboxes and sprites when they are desroyed			//
 //		Write a destroy function that changes the sprite								//
 //      to an explosion for 10-15 frames												//
-//		Fix the gamestate switch case and the start and pause menus						//
+//		*Fix the gamestate switch case and the start and pause menus					//
 //		Get user input at menus to start/ pause/ unpause game							//
 //		Write code to allow for scrolling of the background image						//
 //		Make a dynamic array for enemy health											//
-//		Impliment classes into code
-//		
+//		Impliment classes into code														//
+//		post to c++ forum on how to convert vectormath into one class																				//
+//																						
 //
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
 
@@ -37,6 +39,9 @@ int iPlayerOneWidth;
 int iPlayerOneHeight;
 int iMouseX;
 int iMouseY;
+
+int PlayerB[100];
+
 
 int PMenu = -1;
 int BGImage = -1;
@@ -111,10 +116,10 @@ void PlayerInput()
 			player1.position.y += 1;
 		}
 	}
-	while(GetMouseButtonDown(0) == true)
-	{
-		FireBullet();
-	}
+	//while(GetMouseButtonDown(0) == true)
+	//{
+	//	FireBullet();
+	//}
 }
 
 void EnemyHitbox()

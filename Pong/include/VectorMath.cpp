@@ -16,6 +16,16 @@ struct movableObject
 	int height;
 };
 
+class Vector2D
+{
+
+
+
+
+
+
+};
+
 // subtract a scalar from a vector, return the result as a new vector
 vector2 vectorSubtract(vector2 &v, float s)
 {
