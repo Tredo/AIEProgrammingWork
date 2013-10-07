@@ -41,7 +41,7 @@ int iMouseY;
 int PMenu = -1;
 int BGImage = -1;
 
-int i = 3;
+int i = 1;
 int test = 1;
 
 
@@ -104,11 +104,11 @@ void PlayerInput()
 	{
 		if(player1.position.y > iMouseY)
 		{
-			player1.position.y -=1;
+			player1.position.y -= 1;
 		}
 		else if(player1.position.y < iMouseY)
 		{
-			player1.position.y +=1;
+			player1.position.y += 1;
 		}
 	}
 	while(GetMouseButtonDown(0) == true)
@@ -151,7 +151,7 @@ void InitGame()
 {
 	BGImage = CreateSprite ( "./images/BGImage.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(BGImage, iScreenWidth/2, iScreenHeight/2);
-	player1.sprite = CreateSprite( "./images/Player.png", 200, 200, true );
+	player1.sprite = CreateSprite( "./images/Player.png", 50, 50, true );
 }
 
 void DrawGame()
