@@ -16,17 +16,17 @@ using namespace std;
 //																						//
 //		Change Psuedocode into actual code												//
 //		Figure out the best way to spawn enemies in waves								//
-//		Figure out how to spawn more than one bullet and have separate hitboxes			//	
+//		Figure out how to spawn bullets and have separate hitboxes and sprites			//	
 //		Write code to delete enemy hitboxes and sprites when they are desroyed			//
 //		Write a destroy function that changes the sprite								//
 //      to an explosion for 10-15 frames												//
-//		*Fix the gamestate switch case and the start and pause menus					//
-//		Get user input at menus to start/ pause/ unpause game							//
+//		Fix the gamestate switch case and the start and pause menus						//
+//		*Get user input at menus to start/ pause/ unpause game							//
 //		Write code to allow for scrolling of the background image						//
 //		Make a dynamic array for enemy health											//
 //		Impliment classes into code														//
-//		post to c++ forum on how to convert vectormath into one class																				//
-//																						
+//		post to c++ forum on how to convert vectormath into one class					//															//
+//		HOW2CLASSES?																	//																				
 //
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
 
@@ -42,10 +42,13 @@ int iMouseY;
 
 int PlayerB[100];
 
+int k = 0;
+int j = 0;
+
 
 int PMenu = -1;
 int BGImage = -1;
-
+//switch case variable
 int i = 1;
 int test = 1;
 
@@ -65,8 +68,12 @@ struct movableObject
 	int height;
 };
 
-movableObject player1 = {iScreenWidth/2, 300, 0, 0, -1 , iPlayerOneWidth, iPlayerOneHeight};
-movableObject bullets[100];
+movableObject player1 = {iScreenWidth/2, 300, 1, 1, -1 , iPlayerOneWidth, iPlayerOneHeight};
+movableObject cursor = {iScreenWidth/2, iScreenHeight/2, 0, 0, -1, 25, 25 };
+movableObject pbutton = {iScreenWidth/2, 600, 0, 0, -1, 100, 50};
+movableObject pbuttonhover = {iScreenWidth/2, 1000, 0, 0, -1, 100, 50};
+movableObject bulletr = {iScreenWidth/2, -100, 0, 0, -1, 10, 10};
+movableObject bulletl = {iScreenWidth/2, -100, 0, 0, -1, 10, 10};
 
 void UpdateObjectPosition(movableObject &obj) 
 {
@@ -86,18 +93,17 @@ void MoveEnemy()
 	//1++
 }
 
+
 void FireBullet()
 {
-	for( int u = 0; u < 100; i++)
-	{
-		bullets[u].sprite = CreateSprite("./images/player bullet.png", 10, 10, true);
-		bullets[u].sprite = {player1.position.x, player1.position.y, 0, 1, 10, 10};
-	}
+		bulletr.position.x = player1.position.x + 15;
+		bulletr.position.y = player1.position.y;
+		bulletl.position.x = player1.position.x - 15;
+		bulletl.position.y = player1.position.y;
+		bulletr.speed.y = 1;
+		bulletl.speed.y = 1;
 }
 
-void UpdateBullet()
-{
-}
 void PlayerInput()
 {
 	GetMouseLocation(iMouseX, iMouseY);
@@ -105,28 +111,28 @@ void PlayerInput()
 	{
 		if(player1.position.x > iMouseX)
 		{
-			player1.position.x -= 1;
+			player1.position.x -= .5;
 		}
 		else if(player1.position.x < iMouseX)
 		{
-			player1.position.x += 1;
+			player1.position.x += .5;
 		}
 	}
 	while(player1.position.y != iMouseY)
 	{
 		if(player1.position.y > iMouseY)
 		{
-			player1.position.y -= 1;
+			player1.position.y -= .5;
 		}
 		else if(player1.position.y < iMouseY)
 		{
-			player1.position.y += 1;
+			player1.position.y += .5;
 		}
 	}
-	//while(GetMouseButtonDown(0) == true)
-	//{
-	//	FireBullet();
-	//}
+	if(GetMouseButtonDown(0) == true)
+	{
+		FireBullet();
+	}
 }
 
 void EnemyHitbox()
@@ -152,11 +158,63 @@ void StartMenu()
 	//draw option 3 string
 }
 
-void PauseMenu()
+void InitPMenu()
 {
-	
 	PMenu = CreateSprite( "./images/PMenu.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(PMenu, iScreenWidth/2, iScreenHeight/2);
+	pbuttonhover.sprite = CreateSprite("./images/playbuttonhover.png", 100, 50, true);
+	pbutton.sprite = CreateSprite("./images/playbutton.png", 100, 50, true);
+	cursor.sprite = CreateSprite( "./images/cursor.png", 25, 25, false);
+	j++;
+}
+
+void Cursor()
+{
+	GetMouseLocation(iMouseX, iMouseY);
+}
+
+bool CheckMenuRClick()
+{
+	if(GetMouseButtonDown(0) == true)
+		return true;
+	else
+		return false;
+}
+
+void DrawPauseMenu()
+{
+	ClearScreen();
+	DrawSprite(PMenu);
+	DrawSprite(pbutton.sprite);
+	DrawSprite(pbuttonhover.sprite);
+	DrawSprite(cursor.sprite);
+	FrameworkUpdate();
+}
+
+
+void UpdatePauseMenu()
+{
+	Cursor();
+	MoveSprite(cursor.sprite, iMouseX, iMouseY);
+	MoveSprite(pbutton.sprite, pbutton.position.x, pbutton.position.y);
+	if(iMouseX > pbutton.position.x - 75 && iMouseX < pbutton.position.x + 75 && iMouseY > pbutton.position.y - 50 && iMouseY < pbutton.position.y + 50)
+	{
+		MoveSprite(pbuttonhover.sprite, pbutton.position.x, pbutton.position.y);
+	}
+	else
+	{
+		MoveSprite(pbuttonhover.sprite, 1500, 1500);
+	}
+
+	if(CheckMenuRClick() == true && iMouseX > pbutton.position.x - 75 && iMouseX < pbutton.position.x + 75 && iMouseY > pbutton.position.y - 50 && iMouseY < pbutton.position.y + 50)
+	{
+		i = 1;
+	}
+	else
+	{
+		i = 3;
+	}
+	
 }
 
 void InitGame()
@@ -164,12 +222,17 @@ void InitGame()
 	BGImage = CreateSprite ( "./images/BGImage.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(BGImage, iScreenWidth/2, iScreenHeight/2);
 	player1.sprite = CreateSprite( "./images/Player.png", 50, 50, true );
+	/*bulletr.sprite = CreateSprite( "./images/bullet.png", 10, 10, true);
+	bulletl.sprite = CreateSprite( "./images/bullet.png", 10, 10, true);*/
+	k++;
 }
 
 void DrawGame()
 {
 	ClearScreen();
 	DrawSprite(BGImage);
+	/*DrawSprite(bulletr.sprite);
+	DrawSprite(bulletl.sprite);*/
 	DrawSprite(player1.sprite);
 	//draw player bullets
 	//draw enemy bullets
@@ -183,6 +246,12 @@ void UpdateGame()
 	//SpawnEnemy
 	PlayerInput();
 	MoveSprite(player1.sprite, player1.position.x, player1.position.y);
+	/*MoveSprite(bulletr.sprite, bulletr.position.x, bulletr.position.y);
+	MoveSprite(bulletl.sprite, bulletl.position.x, bulletl.position.y);*/
+	if(IsKeyDown((KEY_SPECIAL+66)) == true)
+	{
+		i = 3;
+	}
 	//update player bullet position
 	//update enemy position
 	//update enemy bullet position
@@ -207,24 +276,36 @@ int main( int argc, char* argv[] )
 
 {	
 	Initialise(iScreenWidth, iScreenHeight, false );
-
-	InitGame();
-
+		
 		do
 		{
 			switch(i)
 			{
 			case 1:
-				PlayerInput();
-				UpdateGame();
-				DrawGame();
+
+				if(k == 0)
+				{
+					InitGame();
+				}
+				else
+				{
+					UpdateGame();
+					DrawGame();
+				}
 				break;
 			case 2:
 				StartMenu();
 				break;
 			case 3:
-				PauseMenu();
-				DrawSprite(PMenu);
+				if(j == 0)
+				{
+					InitPMenu();
+				}
+				else
+				{
+					UpdatePauseMenu();
+					DrawPauseMenu();
+				}
 				break;
 			default:
 				cout << "Error!\n";

@@ -23,12 +23,18 @@
     <ClCompile Include="..\Pong\include\VectorMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\vector2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AIE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\VectorMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\vector2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
