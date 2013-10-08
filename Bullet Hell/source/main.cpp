@@ -49,7 +49,7 @@ int j = 0;
 int PMenu = -1;
 int BGImage = -1;
 //switch case variable
-int i = 1;
+int i = 3;
 int test = 1;
 
 
