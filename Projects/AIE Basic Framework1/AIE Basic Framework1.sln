@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIE Basic Framework1", "AIE Basic Framework1.vcxproj", "{7784EE77-05B0-4602-AC91-C4874BCE482E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7784EE77-05B0-4602-AC91-C4874BCE482E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7784EE77-05B0-4602-AC91-C4874BCE482E}.Debug|Win32.Build.0 = Debug|Win32
+		{7784EE77-05B0-4602-AC91-C4874BCE482E}.Release|Win32.ActiveCfg = Release|Win32
+		{7784EE77-05B0-4602-AC91-C4874BCE482E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
