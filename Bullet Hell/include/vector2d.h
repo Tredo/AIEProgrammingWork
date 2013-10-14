@@ -9,10 +9,14 @@ public:
 	Vector2D(float x, float y);
 	~Vector2D() {};
 
-	float x, y;
+	float getX() {return x;}
+	float getY() {return y;}
+
+	void setX(float xf) { x = xf;}
+	void setY(float yf) { y = yf;}
 	
 private:
-	
+	float x, y;
 };
 
 

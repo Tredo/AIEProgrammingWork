@@ -63,17 +63,17 @@ struct movableObject
 	int height;
 };
 
-movableObject player1 = {iScreenWidth/2, 300, 1, 1, -1 , iPlayerOneWidth, iPlayerOneHeight};
+movableObject player1 = {iScreenWidth/2, 300, 0, 0, -1 , iPlayerOneWidth, iPlayerOneHeight};
 movableObject cursor = {iScreenWidth/2, iScreenHeight/2, 0, 0, -1, 25, 25 };
 movableObject pbutton = {iScreenWidth/2, 600, 0, 0, -1, 100, 50};
 movableObject pbuttonhover = {iScreenWidth/2, 1000, 0, 0, -1, 100, 50};
 movableObject bulletr = {iScreenWidth/2, -100, 0, 0, -1, 10, 10};
 movableObject bulletl = {iScreenWidth/2, -100, 0, 0, -1, 10, 10};
 
-void UpdateObjectPosition(movableObject &obj) 
-{
-	obj.position = vectorAdd(obj.position, obj.speed);
-}
+//void UpdateObjectPosition(movableObject &obj) 
+//{
+//	obj.position = vectorAdd(obj.position, obj.speed);
+//}
 
 void SpawnEnemy()
 {
@@ -91,37 +91,37 @@ void MoveEnemy()
 
 void FireBullet()
 {
-		bulletr.position.x = player1.position.x + 15;
-		bulletr.position.y = player1.position.y;
-		bulletl.position.x = player1.position.x - 15;
-		bulletl.position.y = player1.position.y;
-		bulletr.speed.y = 1;
-		bulletl.speed.y = 1;
+		bulletr.position.setX(player1.position.getX());
+		bulletr.position.setY(player1.position.getY());
+		/*bulletl.position.x = player1.position.x - 15;
+		bulletl.position.y = player1.position.y;*/
+		bulletr.speed.setX(1);
+		bulletl.speed.setY(1);
 }
 
 void PlayerInput()
 {
 	GetMouseLocation(iMouseX, iMouseY);
-	while(player1.position.x != iMouseX)
+	while(player1.position.getX() != iMouseX)
 	{
-		if(player1.position.x > iMouseX)
+		if(player1.position.getX() > iMouseX)
 		{
-			player1.position.x -= .5;
+			player1.position.setX(player1.position.getX() - .5);
 		}
-		else if(player1.position.x < iMouseX)
+		else if(player1.position.getX() < iMouseX)
 		{
-			player1.position.x += .5;
+			player1.position.setX(player1.position.getX() + .5);
 		}
 	}
-	while(player1.position.y != iMouseY)
+	while(player1.position.getY() != iMouseY)
 	{
-		if(player1.position.y > iMouseY)
+		if(player1.position.getY() > iMouseY)
 		{
-			player1.position.y -= .5;
+			player1.position.setY(player1.position.getY() - .5);
 		}
-		else if(player1.position.y < iMouseY)
+		else if(player1.position.getY() < iMouseY)
 		{
-			player1.position.y += .5;
+			player1.position.setY(player1.position.getY() + .5);
 		}
 	}
 	if(GetMouseButtonDown(0) == true)
@@ -132,6 +132,7 @@ void PlayerInput()
 
 void EnemyHitbox()
 {
+	//need for loop for enemy array and for player bullet array
 	//if player bullet x is in between enemyx - 1/2 width and enemy x + 1/2 width AND
 	//player bullet y is in between enemy y - 1/2 height and enemy y + 1/2 height
 	//enemy takes damage
@@ -139,6 +140,7 @@ void EnemyHitbox()
 
 void PlayerHitbox()
 {
+	//need for loop for enemy bullet array checking
 	//if enemy bullet x is in between player x - 1/2 width and player x + 1/2 width AND
 	//enemy bullet y is in between player y - 1/2 height and player y + 1/2 height
 	//player is destroyed
@@ -191,17 +193,17 @@ void UpdatePauseMenu()
 {
 	Cursor();
 	MoveSprite(cursor.sprite, iMouseX, iMouseY);
-	MoveSprite(pbutton.sprite, pbutton.position.x, pbutton.position.y);
-	if(iMouseX > pbutton.position.x - 75 && iMouseX < pbutton.position.x + 75 && iMouseY > pbutton.position.y - 50 && iMouseY < pbutton.position.y + 50)
+	MoveSprite(pbutton.sprite, pbutton.position.getX(), pbutton.position.getY());
+	if(iMouseX > (pbutton.position.getX() - 75) && iMouseX < (pbutton.position.getX() + 75) && iMouseY > (pbutton.position.getY() - 50) && iMouseY < (pbutton.position.getY() + 50))
 	{
-		MoveSprite(pbuttonhover.sprite, pbutton.position.x, pbutton.position.y);
+		MoveSprite(pbuttonhover.sprite, pbutton.position.getX(), pbutton.position.getY());
 	}
 	else
 	{
 		MoveSprite(pbuttonhover.sprite, 1500, 1500);
 	}
 
-	if(CheckMenuRClick() == true && iMouseX > pbutton.position.x - 75 && iMouseX < pbutton.position.x + 75 && iMouseY > pbutton.position.y - 50 && iMouseY < pbutton.position.y + 50)
+	if(CheckMenuRClick() == true && iMouseX > (pbutton.position.getX() - 75) && iMouseX < (pbutton.position.getX() + 75) && iMouseY > (pbutton.position.getY() - 50) && iMouseY < (pbutton.position.getY() + 50))
 	{
 		i = 1;
 	}
@@ -240,7 +242,7 @@ void UpdateGame()
 {
 	//SpawnEnemy
 	PlayerInput();
-	MoveSprite(player1.sprite, player1.position.x, player1.position.y);
+	MoveSprite(player1.sprite, player1.position.getX(), player1.position.getY());
 	/*MoveSprite(bulletr.sprite, bulletr.position.x, bulletr.position.y);
 	MoveSprite(bulletl.sprite, bulletl.position.x, bulletl.position.y);*/
 	if(IsKeyDown((KEY_SPECIAL+66)) == true)
