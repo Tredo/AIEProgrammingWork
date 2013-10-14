@@ -8,10 +8,11 @@ public:
 	Vector2D();
 	Vector2D(float x, float y);
 	~Vector2D() {};
+
+	float x, y;
 	
 private:
-	float x;
-	float y;
+	
 };
 
 

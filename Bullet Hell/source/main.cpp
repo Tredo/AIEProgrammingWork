@@ -7,6 +7,7 @@
 #include <crtdbg.h>
 #include <iostream>
 #include "VectorMath.h"
+#include "vector2d.h"
 #include <algorithm>
 
 using namespace std;
@@ -27,7 +28,8 @@ using namespace std;
 //		Impliment classes into code														//
 //		post to c++ forum on how to convert vectormath into one class					//															//
 //		HOW2CLASSES?																	//																				
-//
+//		Fix exiting the game															//
+//																						//
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
 
 const int iScreenWidth = 1280;
@@ -49,20 +51,13 @@ int j = 0;
 int PMenu = -1;
 int BGImage = -1;
 //switch case variable
-int i = 3;
+int i = 0;
 int test = 1;
-
-
-struct vector2
-{
-	float x;
-	float y;
-};
 
 struct movableObject
 {
-	vector2 position;
-	vector2 speed;
+	Vector2D position;
+	Vector2D speed;
 	int sprite;
 	int width;
 	int height;
@@ -308,7 +303,15 @@ int main( int argc, char* argv[] )
 				}
 				break;
 			default:
-				cout << "Error!\n";
+				if(j == 0)
+				{
+					InitPMenu();
+				}
+				else
+				{
+					UpdatePauseMenu();
+					DrawPauseMenu();
+				}
 				break;
 			}
 		}
