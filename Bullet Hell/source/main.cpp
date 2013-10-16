@@ -26,16 +26,18 @@ using namespace std;
 //		Write code to allow for scrolling of the background image						//
 //		Make a dynamic array for enemy health											//
 //		*Impliment classes into code													//
-//		*post to c++ forum on how to convert vectormath into one class					//															//
-//		HOW2CLASSES?																	//																				
-//		Fix exiting the game															//
+//		*post to c++ forum on how to convert vectormath into one class					//															
+//		*HOW2CLASSES? convert sprites from movableObject to Sprite::Sprite				//																				
+//		*Fix exiting the game															//
 //		Create dynamic array for both right and left bullet								//
 //		Play more Touhou																//
-//		Create large array for left and right bullets and a for loop to fire them       //																				//
+//		*Write a seek function that will move by the mag of vectors						//
+//		SIMPLIFY THIS SHIT																//
+//																						//												
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
 
-const int iScreenWidth = 700;
-const int iScreenHeight = 900;
+const int iScreenWidth = 800;
+const int iScreenHeight = 1000;
 
 int iPlayerOneX;
 int iPlayerOneY;
@@ -43,8 +45,6 @@ int iPlayerOneWidth = 100;
 int iPlayerOneHeight = 100;
 int iMouseX;
 int iMouseY;
-
-int PlayerB[100];
 
 int k = 0;
 int j = 0;
@@ -57,27 +57,17 @@ int i = 0;
 int test = 1;
 
 
-struct movableObject
-{
-	Vector2D position;
-	Vector2D speed;
-	int sprite;
-	int width;
-	int height;
-};
+Sprite bulletr;
+Sprite bulletl;
+Sprite player;
+Sprite cursor;
+Sprite pbutton;
+Sprite pbuttonhover;
+Sprite qbutton;
+Sprite qbuttonhover;
 
 
 
-movableObject bulletr;
-movableObject player;
-movableObject cursor;
-movableObject pbutton;
-movableObject pbuttonhover;
-movableObject qbutton;
-movableObject qbuttonhover;
-
-
-movableObject bulletl;
 
 //void UpdateObjectPosition(movableObject &obj) 
 //{
@@ -100,37 +90,37 @@ void MoveEnemy()
 
 void FireBullet()
 {
-		bulletr.position.setX(player.position.getX() + 15);
-		bulletr.position.setY(player.position.getY());
-		bulletl.position.setX(player.position.getX() - 15);
-		bulletl.position.setY(player.position.getY());
-		bulletr.speed.setY(2);
-		bulletl.speed.setY(2);
+		bulletr.setX(player.getX() + 20);
+		bulletr.setY(player.getY() + 10);
+		bulletl.setX(player.getX() - 20);
+		bulletl.setY(player.getY() + 10);
+		bulletr.setSpeedY(2);
+		bulletl.setSpeedY(2);
 }
 
 void PlayerInput()
 {
 	GetMouseLocation(iMouseX, iMouseY);
-	while(player.position.getX() != iMouseX)
+	if(player.getX() != iMouseX)
 	{
-		if(player.position.getX() > iMouseX)
+		if(player.getX() > iMouseX)
 		{
-			player.position.setX(player.position.getX() - .5);
+			player.setX(player.getX() - ((player.getX() - iMouseX)/250));
 		}
-		else if(player.position.getX() < iMouseX)
+		else if(player.getX() < iMouseX)
 		{
-			player.position.setX(player.position.getX() + .5);
+			player.setX(player.getX() - ((player.getX() - iMouseX)/250));
 		}
 	}
-	while(player.position.getY() != iMouseY)
+	if(player.getY() != iMouseY)
 	{
-		if(player.position.getY() > iMouseY)
+		if(player.getY() > iMouseY)
 		{
-			player.position.setY(player.position.getY() - .5);
+			player.setY(player.getY() - ((player.getY() - iMouseY)/250));
 		}
-		else if(player.position.getY() < iMouseY)
+		else if(player.getY() < iMouseY)
 		{
-			player.position.setY(player.position.getY() + .5);
+			player.setY(player.getY() - ((player.getY() - iMouseY)/250));
 		}
 	}
 	if(GetMouseButtonDown(0) == true)
@@ -166,33 +156,33 @@ void StartMenu()
 
 void InitPMenu()
 {
-	qbutton.position.setX(iScreenWidth/2);
-	qbutton.position.setY(650);
-	qbutton.width = 100;
-	qbutton.height = 50;
-	qbuttonhover.position.setX(iScreenWidth/2);
-	qbuttonhover.position.setY(2000);
-	qbuttonhover.width = 100;
-	qbuttonhover.height = 50;
-	pbutton.position.setX(iScreenWidth/2);
-	pbutton.position.setY(600);
-	pbutton.width = 100;
-	pbutton.height = 50;
-	pbuttonhover.position.setX(iScreenWidth/2);
-	pbuttonhover.position.setY(2000);
-	pbuttonhover.width = 100;
-	pbuttonhover.height = 50;
-	cursor.position.setX(0);
-	cursor.position.setY(0);
-	cursor.height = 25;
-	cursor.width = 25;
+	qbutton.setX(iScreenWidth/2);
+	qbutton.setY(650);
+	qbutton.setWidth(100);
+	qbutton.setHeight(50);
+	qbuttonhover.setX(iScreenWidth/2);
+	qbuttonhover.setY(2000);
+	qbuttonhover.setWidth(100);
+	qbuttonhover.setHeight(50);
+	pbutton.setX(iScreenWidth/2);
+	pbutton.setY(600);
+	pbutton.setWidth(100);
+	pbutton.setHeight(50);
+	pbuttonhover.setX(iScreenWidth/2);
+	pbuttonhover.setY(2000);
+	pbuttonhover.setWidth(100);
+	pbuttonhover.setHeight(50);
+	cursor.setX(0);
+	cursor.setY(0);
+	cursor.setHeight(25);
+	cursor.setWidth(25);
 	PMenu = CreateSprite( "./images/PMenu.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(PMenu, iScreenWidth/2, iScreenHeight/2);
-	pbuttonhover.sprite = CreateSprite("./images/playbuttonhover.png", 100, 50, true);
-	pbutton.sprite = CreateSprite("./images/playbutton.png", 100, 50, true);
-	qbuttonhover.sprite = CreateSprite("./images/quitbuttonhover.png", 100, 50, true);
-	qbutton.sprite = CreateSprite("./images/quitbutton.png", 100, 50, true);
-	cursor.sprite = CreateSprite( "./images/cursor.png", 25, 25, false);
+	pbuttonhover.setSprite( CreateSprite("./images/playbuttonhover.png", 100, 50, true));
+	pbutton.setSprite( CreateSprite("./images/playbutton.png", 100, 50, true));
+	qbuttonhover.setSprite( CreateSprite("./images/quitbuttonhover.png", 100, 50, true));
+	qbutton.setSprite( CreateSprite("./images/quitbutton.png", 100, 50, true));
+	cursor.setSprite( CreateSprite( "./images/cursor.png", 25, 25, false));
 	j++;
 }
 
@@ -213,11 +203,11 @@ void DrawPauseMenu()
 {
 	ClearScreen();
 	DrawSprite(PMenu);
-	DrawSprite(pbutton.sprite);
-	DrawSprite(pbuttonhover.sprite);
-	DrawSprite(qbutton.sprite);
-	DrawSprite(qbuttonhover.sprite);
-	DrawSprite(cursor.sprite);
+	DrawSprite(pbutton.getSprite());
+	DrawSprite(pbuttonhover.getSprite());
+	DrawSprite(qbutton.getSprite());
+	DrawSprite(qbuttonhover.getSprite());
+	DrawSprite(cursor.getSprite());
 	FrameworkUpdate();
 }
 
@@ -225,19 +215,19 @@ void DrawPauseMenu()
 void UpdatePauseMenu()
 {
 	Cursor();
-	MoveSprite(cursor.sprite, iMouseX, iMouseY);
-	MoveSprite(pbutton.sprite, pbutton.position.getX(), pbutton.position.getY());
-	MoveSprite(qbutton.sprite, qbutton.position.getX(), qbutton.position.getY());
-	if(iMouseX > (pbutton.position.getX() - 50) && iMouseX < (pbutton.position.getX() + 50) && iMouseY > (pbutton.position.getY() - 25) && iMouseY < (pbutton.position.getY() + 25))
+	MoveSprite(cursor.getSprite(), iMouseX, iMouseY);
+	MoveSprite(pbutton.getSprite(), pbutton.getX(), pbutton.getY());
+	MoveSprite(qbutton.getSprite(), qbutton.getX(), qbutton.getY());
+	if(iMouseX > (pbutton.getX() - 50) && iMouseX < (pbutton.getX() + 50) && iMouseY > (pbutton.getY() - 25) && iMouseY < (pbutton.getY() + 25))
 	{
-		MoveSprite(pbuttonhover.sprite, pbutton.position.getX(), pbutton.position.getY());
+		MoveSprite(pbuttonhover.getSprite(), pbutton.getX(), pbutton.getY());
 	}
 	else
 	{
-		MoveSprite(pbuttonhover.sprite, 1500, 1500);
+		MoveSprite(pbuttonhover.getSprite(), 1500, 1500);
 	}
 
-	if(CheckMenuRClick() == true && iMouseX > (pbutton.position.getX() - 50) && iMouseX < (pbutton.position.getX() + 50) && iMouseY > (pbutton.position.getY() - 25) && iMouseY < (pbutton.position.getY() + 25))
+	if(CheckMenuRClick() == true && iMouseX > (pbutton.getX() - 50) && iMouseX < (pbutton.getX() + 50) && iMouseY > (pbutton.getY() - 25) && iMouseY < (pbutton.getY() + 25))
 	{
 		i = 1;
 	}
@@ -246,16 +236,16 @@ void UpdatePauseMenu()
 		i = 3;
 	}
 
-	if(iMouseX > (qbutton.position.getX() - 50) && iMouseX < (qbutton.position.getX() + 50) && iMouseY > (qbutton.position.getY() - 25) && iMouseY < (qbutton.position.getY() + 25))
+	if(iMouseX > (qbutton.getX() - 50) && iMouseX < (qbutton.getX() + 50) && iMouseY > (qbutton.getY() - 25) && iMouseY < (qbutton.getY() + 25))
 	{
-		MoveSprite(qbuttonhover.sprite, qbutton.position.getX(), qbutton.position.getY());
+		MoveSprite(qbuttonhover.getSprite(), qbutton.getX(), qbutton.getY());
 	}
 	else
 	{
-		MoveSprite(qbuttonhover.sprite, 1500, 1500);
+		MoveSprite(qbuttonhover.getSprite(), 1500, 1500);
 	}
 
-	if(CheckMenuRClick() == true && iMouseX > (qbutton.position.getX() - 50) && iMouseX < (qbutton.position.getX() + 50) && iMouseY > (qbutton.position.getY() - 25) && iMouseY < (qbutton.position.getY() + 25))
+	if(CheckMenuRClick() == true && iMouseX > (qbutton.getX() - 50) && iMouseX < (qbutton.getX() + 50) && iMouseY > (qbutton.getY() - 25) && iMouseY < (qbutton.getY() + 25))
 	{
 		test = 0;
 	}
@@ -264,15 +254,15 @@ void UpdatePauseMenu()
 
 void InitGame()
 {
-	player.position.setX(iScreenWidth/2);
-	player.position.setY(500);
-	player.height = iPlayerOneHeight;
-	player.width = iPlayerOneWidth;
+	player.setX(iScreenWidth/2);
+	player.setY(500);
+	player.setHeight(iPlayerOneHeight);
+	player.setWidth(iPlayerOneWidth);
 	BGImage = CreateSprite ( "./images/BGImage.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(BGImage, iScreenWidth/2, iScreenHeight/2);
-	player.sprite = CreateSprite( "./images/Player.png", iPlayerOneWidth, iPlayerOneHeight, true );
-	bulletr.sprite = CreateSprite( "./images/player bullet.png", 7, 30, true);
-	bulletl.sprite = CreateSprite( "./images/player bullet.png", 7, 30, true);
+	player.setSprite( CreateSprite( "./images/Player.png", iPlayerOneWidth, iPlayerOneHeight, true ));
+	bulletr.setSprite( CreateSprite( "./images/player bullet.png", 7, 30, true));
+	bulletl.setSprite( CreateSprite( "./images/player bullet.png", 7, 30, true));
 	k++;
 }
 
@@ -280,9 +270,9 @@ void DrawGame()
 {
 	ClearScreen();
 	DrawSprite(BGImage);
-	DrawSprite(bulletr.sprite);
-	DrawSprite(bulletl.sprite);
-	DrawSprite(player.sprite);
+	DrawSprite(bulletr.getSprite());
+	DrawSprite(bulletl.getSprite());
+	DrawSprite(player.getSprite());
 	//draw player bullets
 	//draw enemy bullets
 	//draw enemy sprites
@@ -291,19 +281,19 @@ void DrawGame()
 }
 void UpdateBullet()
 {
-	bulletr.position.setX(bulletr.position.getX() - bulletr.speed.getX());
-	bulletr.position.setY(bulletr.position.getY() - bulletr.speed.getY());
-	bulletl.position.setX(bulletl.position.getX() - bulletl.speed.getX());
-	bulletl.position.setY(bulletl.position.getY() - bulletl.speed.getY());
+	bulletr.setX(bulletr.getX() - bulletr.getSpeedX());
+	bulletr.setY(bulletr.getY() - bulletr.getSpeedY());
+	bulletl.setX(bulletl.getX() - bulletl.getSpeedX());
+	bulletl.setY(bulletl.getY() - bulletl.getSpeedY());
 }
 
 void UpdateGame()
 {
 	//SpawnEnemy
 	PlayerInput();
-	MoveSprite(player.sprite, player.position.getX(), player.position.getY());
-	MoveSprite(bulletr.sprite, bulletr.position.getX(), bulletr.position.getY());
-	MoveSprite(bulletl.sprite, bulletl.position.getX(), bulletl.position.getY());
+	MoveSprite(player.getSprite(), player.getX(), player.getY());
+	MoveSprite(bulletr.getSprite(), bulletr.getX(), bulletr.getY());
+	MoveSprite(bulletl.getSprite(), bulletl.getX(), bulletl.getY());
 	if(IsKeyDown((KEY_SPECIAL+66)) == true)
 	{
 		i = 3;
