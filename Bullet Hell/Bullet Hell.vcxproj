@@ -104,10 +104,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Pong\include\VectorMath.cpp" />
+<<<<<<< HEAD
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="source\game.cpp" />
+=======
+>>>>>>> parent of 1f33280... mech rework update
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\vector2d.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="include\AIE.h" />
     <ClInclude Include="include\vector2d.h" />
     <ClInclude Include="include\VectorMath.h" />

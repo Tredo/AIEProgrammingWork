@@ -21,7 +21,7 @@ using namespace std;
 //		Write code to delete enemy hitboxes and sprites when they are desroyed			//
 //		Write a destroy function that changes the sprite								//
 //      to an explosion for 10-15 frames												//
-//		Fix the gamestate switch case and the start and pause menus						//
+//		*Fix the gamestate switch case and the start and pause menus					//
 //		*Get user input at menus to start/ pause/ unpause game							//
 //		Write code to allow for scrolling of the background image						//
 //		Make a dynamic array for enemy health											//
@@ -29,13 +29,26 @@ using namespace std;
 //		*post to c++ forum on how to convert vectormath into one class					//															
 //		*HOW2CLASSES? convert sprites from movableObject to Sprite::Sprite				//																				
 //		*Fix exiting the game															//
-//		Create dynamic array for both right and left bullet								//
+//		*Create dynamic array for both right and left bullet							//
 //		Play more Touhou																//
 //		*Write a seek function that will move by the mag of vectors						//
 //		SIMPLIFY THIS SHIT																//
-//																						//												
+//		FUCK IT IS BROKEN FIX IT																				//
+//		FIX BUGS																		//
+//		RECYCLE CLASSES																	//
+//		ENEMY SPAWNS																	//
+//		ENEMY COLLISION																	//
+//		ENEMY SHOOTING																	//
+//		SCORING																			//
+//																						//
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\//
 
+<<<<<<< HEAD
+extern int i;
+extern int k;
+extern int j;
+extern int test;
+=======
 const int iScreenWidth = 800;
 const int iScreenHeight = 1000;
 
@@ -136,8 +149,9 @@ void EnemyHitbox()
 	//player bullet y is in between enemy y - 1/2 height and enemy y + 1/2 height
 	//enemy takes damage
 }
+>>>>>>> parent of 1f33280... mech rework update
 
-void PlayerHitbox()
+void Hitbox()
 {
 	//need for loop for enemy bullet array checking
 	//if enemy bullet x is in between player x - 1/2 width and player x + 1/2 width AND
@@ -145,14 +159,14 @@ void PlayerHitbox()
 	//player is destroyed
 }
 
-void StartMenu()
+enum Case
 {
-	//create menu sprite
-	//move menu sprite to middle of screen
-	//draw option 1 string
-	//draw option 2 string
-	//draw option 3 string
-}
+	Game = 1,
+	Start,
+	Pause
+};
+
+//Case i;
 
 void InitPMenu()
 {
@@ -328,22 +342,14 @@ int main( int argc, char* argv[] )
 			switch(i)
 			{
 			case 1:
-
-				if(k == 0)
 				{
 					InitGame();
-				}
-				else
-				{
 					UpdateGame();
 					UpdateBullet();
 					DrawGame();
 				}
 				break;
-			case 2:
-				StartMenu();
-				break;
-			case 3:
+			case Start:
 				if(j == 0)
 				{
 					InitPMenu();

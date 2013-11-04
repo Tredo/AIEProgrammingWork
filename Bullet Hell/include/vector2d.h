@@ -10,9 +10,6 @@ public:
 	~Vector2D() {};
 
 	float getX() {return x;}
-
-
-
 	float getY() {return y;}
 
 	void setX(float xs) { x = xs;}
