@@ -42,6 +42,7 @@
     <GenerateManifest>true</GenerateManifest>
     <EmbedManifest>false</EmbedManifest>
     <TargetName>$(ProjectName)_d</TargetName>
+    <LibraryPath>C:\Users\student\Documents\GitHub\AIEProgrammingWork\Shmup\resources;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>obj\</IntDir>
@@ -64,7 +65,7 @@
       <ProgramDatabaseFile>$(OutDir)$(ProjectName)_d.pdb</ProgramDatabaseFile>
       <SubSystem>NotSet</SubSystem>
       <AdditionalLibraryDirectories>./libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AIE_GL_Static_Framework_d.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;AIE_GL_Static_Framework_d.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <OutputManifestFile>$(TargetPath).manifest</OutputManifestFile>

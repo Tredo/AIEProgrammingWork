@@ -1,4 +1,4 @@
-#version 330
+#version 150
 
 // very simple vertex shader that just transforms an object-space
 // position into clip space and passes along a texture coordinate

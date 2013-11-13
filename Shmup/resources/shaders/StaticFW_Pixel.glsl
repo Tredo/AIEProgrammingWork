@@ -1,4 +1,4 @@
-#version 330
+#version 150
 
 // very simple pixel shader that just samples a texture
 

@@ -13,21 +13,16 @@
 bool GameRunning = true;
 int k = 1;
 
-// SO MANY LINKER ERRORS
+// NO MORE LINKER ERRORS BUT IT IS BORK
 
 int main( int argc, char* argv[] )
 {	
-	Initialise(800, 1000, false);
-	Play fl;
-	fl.InitGame();
-
-	while(GameRunning == true)
-	{
-		fl.UpdateGame();
-		fl.DrawGame();
-	}
 	
-	/*do
+	Play fl;
+	Initialise(800, 1000, false,"asdfkhasdf");
+	fl.InitGame();
+		
+	do
 	{
 		switch(k)
 		{
@@ -51,7 +46,7 @@ int main( int argc, char* argv[] )
 			break;
 		}
 	}
-		while(GameRunning == true);*/
+		while(GameRunning == true);
 	
 	Shutdown();
 
