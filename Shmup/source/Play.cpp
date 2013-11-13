@@ -15,8 +15,13 @@ void Play::InitGame()
 {
 	int iScreenWidth = 800;
 	int iScreenHeight = 1000;
-	enemy.setX(400);
-	enemy.setSpeedX(2);
+	
+	for(int k = 0; k <=10; k++)
+	{
+		enemy[k].setX(400);
+		enemy[k].setSpeedX(2);
+		enemy[k].setSprite( CreateSprite( "./images/enemy.png", 50, 50, true ));
+	}
 	player.setX(iScreenWidth/2);
 	player.setY(500);
 	player.setHeight(100);
@@ -24,7 +29,7 @@ void Play::InitGame()
 	BGImage.setSprite( CreateSprite ( "./images/BGImage.png", iScreenWidth, iScreenHeight, true ));
 	MoveSprite(BGImage.getSprite(), iScreenWidth/2, iScreenHeight/2);
 	player.setSprite( CreateSprite( "./images/Player.png", player.getWidth(), player.getHeight(), true ));
-	enemy.setSprite( CreateSprite( "./images/enemy.png", 50, 50, true ));
+	
 	for(int u=0; u <=50; u++)
 	{
 		Bullet[u].setSprite( CreateSprite( "./images/player bullet.png", 10, 15, true ));
@@ -34,17 +39,20 @@ void Play::InitGame()
 
 void Play::EnemyWaveOne()
 {
-	enemy.setY(100);
-	if(enemy.getX() < 0)
+	for(int k = 0; k <=10; k++)
 	{
-		enemy.setX(20);
-		enemy.setSpeedX( enemy.getSpeedX() * -1);
+		enemy[k].setY(100);
+		if(enemy[k].getX() < 0)
+		{
+			enemy[k].setX(20);
+			enemy[k].setSpeedX( enemy[k].getSpeedX() * -1);
 		
-	}
-	else if(enemy.getX() > 800)
-	{
-		enemy.setX(780);
-		enemy.setSpeedX( enemy.getSpeedX() * -1);
+		}
+		else if(enemy[k].getX() > 800)
+		{
+			enemy[k].setX(780);
+			enemy[k].setSpeedX( enemy[k].getSpeedX() * -1);
+		}
 	}
 }
 

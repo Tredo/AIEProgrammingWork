@@ -9,7 +9,7 @@ public:
 	~Play(void);
 
 	Sprite player;
-	Sprite enemy;
+	Sprite enemy[10];
 	Sprite BGImage;
 	Bullet Bullet[20];
 			
