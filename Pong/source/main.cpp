@@ -9,7 +9,7 @@
 #include <crtdbg.h>
 #include <ctime>
 #include <conio.h>
-#include "VectorMath.h"
+
 
 const int SCREEN_X = 1280;
 const int SCREEN_Y = 720;

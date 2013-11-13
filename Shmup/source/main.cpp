@@ -17,16 +17,24 @@ int k = 1;
 
 int main( int argc, char* argv[] )
 {	
-	Play::InitGame();
+	Initialise(800, 1000, false);
+	Play fl;
+	fl.InitGame();
 
-	do
+	while(GameRunning == true)
+	{
+		fl.UpdateGame();
+		fl.DrawGame();
+	}
+	
+	/*do
 	{
 		switch(k)
 		{
 		case 1:
 			{
-				Play::UpdateGame();
-				Play::DrawGame();
+				fl.UpdateGame();
+				fl.DrawGame();
 			}
 			break;
 		case 2:
@@ -43,7 +51,7 @@ int main( int argc, char* argv[] )
 			break;
 		}
 	}
-		while(GameRunning == true);
+		while(GameRunning == true);*/
 	
 	Shutdown();
 

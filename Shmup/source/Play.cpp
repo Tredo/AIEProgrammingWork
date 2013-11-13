@@ -1,22 +1,20 @@
-#include "Sprite.h"
-#include "AIE.h"
-#include "game.h"
-#include "Bullet.h"
+#include "Play.h"
 
-//int BGImage = -1;
-//
-//Bullet bulletr[25];
-//Bullet bulletl[25];
-//Sprite player;
-//
-//int i, k;
-//
-const int iScreenWidth = 800;
-const int iScreenHeight = 1000;
 
-void InitGame()
+Play::Play(void)
+{	
+}
+
+Play::~Play(void)
 {
-	
+}
+
+
+
+void Play::InitGame()
+{
+	int iScreenWidth = 800;
+	int iScreenHeight = 1000;
 	player.setX(iScreenWidth/2);
 	player.setY(500);
 	player.setHeight(100);
@@ -24,26 +22,14 @@ void InitGame()
 	BGImage = CreateSprite ( "./images/BGImage.png", iScreenWidth, iScreenHeight, true );
 	MoveSprite(BGImage, iScreenWidth/2, iScreenHeight/2);
 	player.setSprite( CreateSprite( "./images/Player.png", player.getWidth(), player.getHeight(), true ));
-	/*for(int u=0; u <=10; u++)
+	for(int u=0; u <=25; u++)
 	{
-		bulletr[u].setSprite( CreateSprite( "./images/player bullet.png", 7, 15, true ));
-		bulletl[u].setSprite( CreateSprite( "./images/player bullet.png", 7, 15, true ));
-	}
-	*/
-}
-//
-//
-//
-void UpdateBullet()
-{
-	for(int y=0; y <=25; y++)
-	{
-		bulletr[y].update();
-		bulletl[y].update();
+		Bullet[u].setSprite( CreateSprite( "./images/player bullet.png", 7, 15, true ));
+		Bullet[u].setSprite( CreateSprite( "./images/player bullet.png", 7, 15, true ));
 	}
 }
 
-void PlayerInput()
+void Play::PlayerInput()
 {
 	int iMouseX;
 	int iMouseY;
@@ -70,49 +56,50 @@ void PlayerInput()
 			player.setY(player.getY() - ((player.getY() - iMouseY)/250));
 		}
 	}
-
 	if(GetMouseButtonDown(0) == true)
 	{
-		FireBullet();
+		static int bCount = 0;
+		if(Bullet[bCount].isAlive() == true)
+		{
+			Bullet[bCount].FireBullet();
+			bCount++;
+		}
+		else
+		{
+			bCount++;
+		}
 	}
-	
+
 }
-//
-//
-void UpdateGame()
+
+void Play::UpdateGame()
 {
 	//SpawnEnemy
 	PlayerInput();
-	/*MoveSprite(player.getSprite(), player.getX(), player.getY());	
-	if(IsKeyDown((KEY_SPECIAL+66)) == true)
+	MoveSprite(player.getSprite(), player.getX(), player.getY());	
+	for(int w=0; w <=25; w++)
 	{
-		i = 3;
-	}*/
-	UpdateBullet();
-
+		MoveSprite(Bullet[w].getSprite(), Bullet[w].getX(), Bullet[w].getY());
+	}
 	//update enemy position
 	//update enemy bullet position
 	//check player collision
 	//check enemy collision
-	//move player bulllet sprites to player bullets' positions
 	//MoveEnemy
 	//move enemy sprites to enemy positions
 	//move enemy bullet sprites to enemy bullets' sprites' positions
 	//EnemyHitbox
 	//PlayerHitbox
 }
-//
-void DrawGame()
+
+void Play::DrawGame()
 {
 	ClearScreen();
 	DrawSprite(BGImage);
 	DrawSprite(player.getSprite());
-	for(int w=0; w <=10; w++)
+	for(int w=0; w <=25; w++)
 	{
-		DrawSprite(bulletr[w].getSprite());
-		DrawSprite(bulletl[w].getSprite());
+		DrawSprite(Bullet[w].getSprite());
 	}
 	FrameworkUpdate();
 }
-
-
