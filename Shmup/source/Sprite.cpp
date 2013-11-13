@@ -80,3 +80,13 @@ void Sprite::setSprite(int k)
 {
 	sprite = k;
 }
+
+void Sprite::setAlive(bool alive)
+{
+	m_bisalive = alive;
+}
+
+bool Sprite::isAlive()
+{
+	return m_bisalive;
+}

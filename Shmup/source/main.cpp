@@ -13,7 +13,7 @@
 bool GameRunning = true;
 int k = 1;
 
-// NO MORE LINKER ERRORS BUT IT IS BORK
+// BULLETS DONT FIRE WHY?
 
 int main( int argc, char* argv[] )
 {	
@@ -28,8 +28,11 @@ int main( int argc, char* argv[] )
 		{
 		case 1:
 			{
+				fl.EnemyWaveOne();
+				fl.EnemyHitbox();
 				fl.UpdateGame();
 				fl.DrawGame();
+				
 			}
 			break;
 		case 2:

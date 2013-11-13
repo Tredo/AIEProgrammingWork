@@ -28,10 +28,14 @@ public:
 
 	void setSprite(int k);
 
+	void setAlive(bool alive);
+	bool isAlive();
+
 private:
 	float x, y;
 	int xc, yc;
 	int width, height;
 	int sprite;
+	bool m_bisalive;
 };
 

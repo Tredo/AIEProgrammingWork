@@ -8,10 +8,13 @@ public:
 	~Bullet(void);
 
 	void setAlive(bool alive);
+	void setIdle(bool idle);
 	bool isAlive();
+	bool isIdle();
 	void FireBullet();
 	
 private:
 	bool m_bisAlive;
+	bool m_bisIdle;
 };
 

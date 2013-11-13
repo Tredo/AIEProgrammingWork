@@ -9,14 +9,18 @@ public:
 	~Play(void);
 
 	Sprite player;
+	Sprite enemy;
+	Sprite BGImage;
 	Bullet Bullet[20];
 			
 	void InitGame();
+	void EnemyWaveOne();
 	void PlayerInput();	
 	void UpdateGame();
 	void DrawGame();
+	void EnemyHitbox();
 	
 private:
-	int BGImage;
+	
 };
 
